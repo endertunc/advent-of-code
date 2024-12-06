@@ -11,3 +11,7 @@ var Directions = [][]int{
 	{-1, 0},  // left
 	{-1, -1}, // up-left
 }
+
+type Point struct {
+	X, Y int
+}
