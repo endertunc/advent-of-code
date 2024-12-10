@@ -1,5 +1,7 @@
 package _024
 
+import "log"
+
 // Directions in clockwise
 var Directions = [][]int{
 	{0, -1},  // up
@@ -10,6 +12,35 @@ var Directions = [][]int{
 	{-1, 1},  // down-left
 	{-1, 0},  // left
 	{-1, -1}, // up-left
+}
+
+const (
+	NORTH = iota
+	NORTH_EAST
+	EAST
+	SOUTH_EAST
+	SOUTH
+	SOUTH_WEST
+	WEST
+	NORTH_WEST
+)
+
+var AllDirectionsMap = map[int]struct{ X, Y int }{
+	NORTH:      {0, -1},
+	NORTH_EAST: {1, -1},
+	EAST:       {1, 0},
+	SOUTH_EAST: {1, 1},
+	SOUTH:      {0, 1},
+	SOUTH_WEST: {-1, 1},
+	WEST:       {-1, 0},
+	NORTH_WEST: {-1, -1},
+}
+
+var NonDiagonallyDirectionsMap = map[int]struct{ X, Y int }{
+	NORTH: {0, -1},
+	EAST:  {1, 0},
+	SOUTH: {0, 1},
+	WEST:  {-1, 0},
 }
 
 type Point struct {
@@ -30,4 +61,23 @@ func (p Point) Move(distance Point) Point {
 
 func (p Point) MoveN(distance Point, n int) Point {
 	return Point{X: p.X + n*distance.X, Y: p.Y + n*distance.Y}
+}
+
+func (p Point) MoveDirection(direction int) Point {
+	d, ok := AllDirectionsMap[direction]
+	if !ok {
+		log.Fatalf("invalid direction: %d", direction)
+	}
+	return Point{X: p.X + 1*d.X, Y: p.Y + 1*d.Y}
+}
+
+func FindNonDiagonalValidPoints[T any](point Point, grid [][]T) []Point {
+	var neighbours []Point
+	for direction, _ := range NonDiagonallyDirectionsMap {
+		nextPoint := point.MoveDirection(direction)
+		if nextPoint.IsValid(len(grid[0]), len(grid)) {
+			neighbours = append(neighbours, nextPoint)
+		}
+	}
+	return neighbours
 }
