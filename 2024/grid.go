@@ -1,6 +1,10 @@
 package _024
 
-import "log"
+import (
+	"fmt"
+	"log"
+	"slices"
+)
 
 // Directions in clockwise
 var Directions = [][]int{
@@ -51,6 +55,11 @@ func (p Point) IsValid(maxX, maxY int) bool {
 	return p.X >= 0 && p.X < maxX && p.Y >= 0 && p.Y < maxY
 }
 
+func IsPointValid[T any](p Point, grid [][]T) bool {
+	maxY, maxX := len(grid), len(grid[0])
+	return p.IsValid(maxX, maxY)
+}
+
 func (p Point) DistanceTo(other Point) Point {
 	return Point{p.X - other.X, +p.Y - other.Y}
 }
@@ -80,4 +89,25 @@ func FindNonDiagonalValidPoints[T any](point Point, grid [][]T) []Point {
 		}
 	}
 	return neighbours
+}
+
+// - - - - - - - - - - - - - - - Debug Helpers - - - - - - - - - - - - - - -
+const (
+	Reset = "\033[0m"
+	Green = "\033[32m"
+)
+
+func prettyPrintGrid(grid [][]string, points []Point) {
+	for i, row := range grid {
+		for j, val := range row {
+			point := Point{X: j, Y: i}
+			if ok := slices.Contains(points, point); ok {
+				fmt.Printf("%s%s%s ", Green, val, Reset)
+			} else {
+				fmt.Printf("%s ", val)
+			}
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 }
