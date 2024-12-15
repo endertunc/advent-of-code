@@ -97,7 +97,7 @@ const (
 	Green = "\033[32m"
 )
 
-func prettyPrintGrid(grid [][]string, points []Point) {
+func PrintPointsOnGrid(grid [][]string, points []Point) {
 	for i, row := range grid {
 		for j, val := range row {
 			point := Point{X: j, Y: i}
@@ -110,4 +110,14 @@ func prettyPrintGrid(grid [][]string, points []Point) {
 		fmt.Println()
 	}
 	fmt.Println()
+}
+
+func PrintGridAsIs(grid [][]string) {
+	for _, row := range grid {
+		s := ""
+		for _, cell := range row {
+			s = s + cell
+		}
+		log.Printf("%s\n", s)
+	}
 }
