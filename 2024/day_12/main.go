@@ -99,7 +99,7 @@ func findAllAreas(grid [][]string) [][]_024.Point {
 }
 
 func findArea(p _024.Point, grid [][]string, areas map[_024.Point]bool) {
-	neighbors := _024.FindNonDiagonalValidPoints(p, grid)
+	neighbors := _024.FindOrthogonalValidPoints(p, grid)
 	areas[p] = true
 	for _, neighbor := range neighbors {
 		neighborValue := grid[neighbor.Y][neighbor.X]
@@ -122,7 +122,7 @@ func calculatePerimeter(grid [][]string) [][]int {
 			p := _024.Point{X: j, Y: i}
 			v := grid[i][j]
 			d := 0
-			neighbors := _024.FindNonDiagonalValidPoints(p, grid)
+			neighbors := _024.FindOrthogonalValidPoints(p, grid)
 			d += 4 - len(neighbors)
 			for _, n := range neighbors {
 				if grid[n.Y][n.X] != v {

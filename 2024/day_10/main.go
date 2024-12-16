@@ -38,7 +38,7 @@ func findPeaks(grid [][]int, point _024.Point, peaks map[_024.Point]int, number 
 		// here we are at the desired number but not at the peak yet.
 		// next, we look for the next number (number + 1) around the current point, recursively.
 		// this approach is very similar to Depth-First Search (DFS)
-		for _, nextPoint := range _024.FindNonDiagonalValidPoints(point, grid) {
+		for _, nextPoint := range _024.FindOrthogonalValidPoints(point, grid) {
 			findPeaks(grid, nextPoint, peaks, number+1)
 		}
 		return

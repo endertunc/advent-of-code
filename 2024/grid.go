@@ -40,7 +40,7 @@ var AllDirectionsMap = map[int]struct{ X, Y int }{
 	NORTH_WEST: {-1, -1},
 }
 
-var NonDiagonallyDirectionsMap = map[int]struct{ X, Y int }{
+var OrthogonalDirectionsMap = map[int]struct{ X, Y int }{
 	NORTH: {0, -1},
 	EAST:  {1, 0},
 	SOUTH: {0, 1},
@@ -80,15 +80,23 @@ func (p Point) MoveDirection(direction int) Point {
 	return Point{X: p.X + 1*d.X, Y: p.Y + 1*d.Y}
 }
 
-func FindNonDiagonalValidPoints[T any](point Point, grid [][]T) []Point {
+func FindOrthogonalValidPoints[T any](point Point, grid [][]T) []Point {
 	var neighbours []Point
-	for direction, _ := range NonDiagonallyDirectionsMap {
+	for direction, _ := range OrthogonalDirectionsMap {
 		nextPoint := point.MoveDirection(direction)
 		if nextPoint.IsValid(len(grid[0]), len(grid)) {
 			neighbours = append(neighbours, nextPoint)
 		}
 	}
 	return neighbours
+}
+
+func TurnClockwiseOrthogonal(direction int) int {
+	return (direction + 2) % 8
+}
+
+func TurnCounterClockwiseOrthogonal(direction int) int {
+	return (direction + 6) % 8
 }
 
 // - - - - - - - - - - - - - - - Debug Helpers - - - - - - - - - - - - - - -
